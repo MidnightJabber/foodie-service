@@ -2,6 +2,8 @@ const hapi = require('hapi');
 const mongoose = require('mongoose');
 require('dotenv').config(); // Fetching env variables
 
+const Ingredient = require('./src/models/Ingredient');
+
 const {
   MLAB_USERNAME,
   MLAB_PASSWORD,
@@ -26,11 +28,33 @@ const server = hapi.server({
 
 // Start server
 const init = async () => {
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, reply) => '<h1>Hello World</h1>',
-  });
+  server.route([
+    {
+      method: 'GET',
+      path: '/',
+      handler: (request, reply) => '<h1>Hello World</h1>',
+    },
+
+    {
+      method: 'GET',
+      path: '/api/v1/ingredient',
+      handler: (request, reply) => Ingredient.find(),
+    },
+
+    {
+      method: 'POST',
+      path: '/api/v1/ingredient',
+      handler: (request, reply) => {
+        const { name, link } = request.payload;
+        const newIngredient = new Ingredient({
+          name,
+          link,
+        });
+
+        return newIngredient.save();
+      },
+    }
+  ]);
 
   await server.start();
 
