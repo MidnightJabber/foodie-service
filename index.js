@@ -1,8 +1,12 @@
 const hapi = require('hapi');
+const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
 const mongoose = require('mongoose');
+
 require('dotenv').config(); // Fetching env variables
 
+const schema = require('./src/schema');
 const Ingredient = require('./src/models/Ingredient');
+
 
 const {
   MLAB_USERNAME,
@@ -28,37 +32,63 @@ const server = hapi.server({
 
 // Start server
 const init = async () => {
-  server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: (request, reply) => '<h1>Hello World</h1>',
-    },
-
-    {
-      method: 'GET',
-      path: '/api/v1/ingredient',
-      handler: (request, reply) => Ingredient.find(),
-    },
-
-    {
-      method: 'POST',
-      path: '/api/v1/ingredient',
-      handler: (request, reply) => {
-        const { name, link } = request.payload;
-        const newIngredient = new Ingredient({
-          name,
-          link,
-        });
-
-        return newIngredient.save();
+  await server.register({
+    plugin: graphiqlHapi,
+    options: {
+      path: '/graphiql',
+      graphiqlOptions: {
+        endpointURL: '/graphql',
       },
-    }
-  ]);
+      route: {
+        cors: true,
+      },
+    },
+  });
+
+  await server.register({
+    plugin: graphqlHapi,
+    options: {
+      path: '/graphql',
+      graphqlOptions: {
+        schema
+      },
+      route: {
+        cors: true,
+      },
+    },
+  });
 
   await server.start();
 
   console.log(`Server running on ${server.info.uri}`);
+
+  // server.route([
+  //   {
+  //     method: 'GET',
+  //     path: '/',
+  //     handler: (request, reply) => '<h1>Hello World</h1>',
+  //   },
+
+  //   {
+  //     method: 'GET',
+  //     path: '/api/v1/ingredient',
+  //     handler: (request, reply) => Ingredient.find(),
+  //   },
+
+  //   {
+  //     method: 'POST',
+  //     path: '/api/v1/ingredient',
+  //     handler: (request, reply) => {
+  //       const { name, link } = request.payload;
+  //       const newIngredient = new Ingredient({
+  //         name,
+  //         link,
+  //       });
+
+  //       return newIngredient.save();
+  //     },
+  //   }
+  // ]);
 }
 
 init();
