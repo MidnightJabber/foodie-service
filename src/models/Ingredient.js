@@ -6,4 +6,4 @@ const IngredientSchema = new Schema({
   link: String,
 });
 
-module.exports = mongoose.model('Ingredient', IngredientSchema);
+mongoose.model('Ingredient', IngredientSchema);

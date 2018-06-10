@@ -3,10 +3,9 @@ const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
 const mongoose = require('mongoose');
 
 require('dotenv').config(); // Fetching env variables
+require('./src/models');
 
-const schema = require('./src/schema');
-const Ingredient = require('./src/models/Ingredient');
-
+const schema = require('./src/graphql/schema');
 
 const {
   MLAB_USERNAME,
@@ -61,34 +60,6 @@ const init = async () => {
   await server.start();
 
   console.log(`Server running on ${server.info.uri}`);
-
-  // server.route([
-  //   {
-  //     method: 'GET',
-  //     path: '/',
-  //     handler: (request, reply) => '<h1>Hello World</h1>',
-  //   },
-
-  //   {
-  //     method: 'GET',
-  //     path: '/api/v1/ingredient',
-  //     handler: (request, reply) => Ingredient.find(),
-  //   },
-
-  //   {
-  //     method: 'POST',
-  //     path: '/api/v1/ingredient',
-  //     handler: (request, reply) => {
-  //       const { name, link } = request.payload;
-  //       const newIngredient = new Ingredient({
-  //         name,
-  //         link,
-  //       });
-
-  //       return newIngredient.save();
-  //     },
-  //   }
-  // ]);
 }
 
 init();
