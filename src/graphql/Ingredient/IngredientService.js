@@ -3,7 +3,7 @@ const IngredientModel = mongoose.model('Ingredient');
 
 const getIngredientByID = (parent, { id }) => IngredientModel.findById(id);
 
-const editIngredient = (parent, { id, name }) => IngredientModel.findById(id, { name }, { new: true });
+const editIngredient = (parent, { id, name }) => IngredientModel.findByIdAndUpdate(id, { name }, { new: true });
 
 const addNewIngredient = (parent, { name, link }) => {
   const newIngredient = new IngredientModel({ name, link });
