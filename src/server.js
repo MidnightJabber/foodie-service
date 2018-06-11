@@ -3,9 +3,11 @@ const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
 const mongoose = require('mongoose');
 
 require('dotenv').config(); // Fetching env variables
-require('./models');
 
-const schema = require('./graphql/schema');
+require('./models'); // Registering models
+const schema = require('./graphql/schema'); // Importing schema
+
+const FALLBACK_PORT = 9080;
 
 const {
   MLAB_USERNAME,
@@ -13,6 +15,8 @@ const {
   MLAB_DS,
   MLAB_PORT,
   MLAB_DB,
+  PORT,
+  HOST,
 } = process.env;
 
 // Connect to MongoDB
@@ -24,8 +28,8 @@ mongoose.connection
 
 // Create sever
 const server = hapi.server({
-  port: 9080,
-  host: 'localhost'
+  port: PORT || FALLBACK_PORT,
+  host: HOST,
 });
 
 
