@@ -1,12 +1,11 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = graphql;
 
 const IngredientType = new GraphQLObjectType({
   name: 'Ingredient',
   fields: () => ({
-    id: { type: GraphQLString },
-    name: { type: GraphQLString },
-    link: { type: GraphQLString },
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    name: { type: new GraphQLNonNull(GraphQLString) },
   })
 });
 
