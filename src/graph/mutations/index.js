@@ -1,11 +1,11 @@
-const { GraphQLObjectType } = require('graphql');
-const IngredientMutations = require('../Ingredient/IngredientMutations');
+import { GraphQLObjectType } from 'graphql';
+import Ingredient from 'graph/Ingredient';
 
 const mutation = new GraphQLObjectType({
   name: 'mutation',
   fields: {
-    ...IngredientMutations,
+    ...Ingredient.IngredientMutations,
   },
 });
 
-module.exports = mutation;
+export default mutation;

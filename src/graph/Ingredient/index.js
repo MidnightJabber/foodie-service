@@ -1,9 +1,9 @@
-const IngredientQueries = require('./IngredientQueries');
-const IngredientMutations = require('./IngredientMutations');
+import IngredientQueries from './IngredientQueries';
+import IngredientMutations from './IngredientMutations';
 
 const Ingredient = {
   IngredientQueries,
   IngredientMutations,
 };
 
-module.exports = Ingredient
+export default Ingredient;

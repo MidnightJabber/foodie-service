@@ -6,11 +6,12 @@
     [
       "module-resolver",
       {
-        "root": ["./src"],
+        "root": ["src"],
         "alias": {
-          "graphql": "./graphql",
-          "models": "./models"
-        }
+          "graph": "./src/graph",
+          "models": "./src/models"
+        },
+        "extensions": [".js", ".jsx", ".es", ".es6", ".mjs"]
       }
     ]
   ]

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const IngredientModel = mongoose.model('Ingredient');
 
 const getIngredientByID = (parent, { id }) => IngredientModel.findById(id);
@@ -11,4 +11,4 @@ const addNewIngredient = (parent, { name, link }) => {
   return newIngredient.save();
 };
 
-module.exports = { getIngredientByID, editIngredient, addNewIngredient };
+export default { getIngredientByID, editIngredient, addNewIngredient };

@@ -1,11 +1,11 @@
-const { GraphQLObjectType } = require('graphql');
-const { IngredientQueries } = require('../Ingredient');
+import { GraphQLObjectType } from 'graphql';
+import Ingredient from 'graph/Ingredient';
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    ...IngredientQueries,
+    ...Ingredient.IngredientQueries,
   },
 });
 
-module.exports = RootQueryType;
+export default RootQueryType;

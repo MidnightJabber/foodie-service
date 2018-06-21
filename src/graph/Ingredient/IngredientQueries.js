@@ -1,8 +1,7 @@
-const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString } = graphql;
+import { GraphQLObjectType, GraphQLString } from 'graphql';
 
-const IngredientType = require('./IngredientType');
-const { getIngredientByID } = require('./IngredientService');
+import IngredientType from './IngredientType';
+import { getIngredientByID } from './IngredientService';
 
 const IngredientQueries = {
   ingredient: {
@@ -12,4 +11,4 @@ const IngredientQueries = {
   },
 };
 
-module.exports = IngredientQueries;
+export default IngredientQueries;
