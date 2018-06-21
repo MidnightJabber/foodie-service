@@ -1,0 +1,17 @@
+{
+  "presets": ["env"],
+  "plugins": [
+    "transform-object-rest-spread",
+
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "graphql": "./graphql",
+          "models": "./models"
+        }
+      }
+    ]
+  ]
+}

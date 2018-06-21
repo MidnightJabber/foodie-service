@@ -1,3 +1,4 @@
-const initServer = require('./server');
+import 'babel-polyfill';
+import initServer from './server';
 
 initServer();
