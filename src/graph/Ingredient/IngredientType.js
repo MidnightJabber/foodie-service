@@ -1,5 +1,4 @@
-const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = graphql;
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
 
 const IngredientType = new GraphQLObjectType({
   name: 'Ingredient',
@@ -9,4 +8,4 @@ const IngredientType = new GraphQLObjectType({
   })
 });
 
-module.exports = IngredientType;
+export default IngredientType;

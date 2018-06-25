@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 
 const IngredientSchema = new Schema({
   name: { type: String, required: [true, 'Name is a required field'] },

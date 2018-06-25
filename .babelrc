@@ -1,0 +1,18 @@
+{
+  "presets": ["env"],
+  "plugins": [
+    "transform-object-rest-spread",
+
+    [
+      "module-resolver",
+      {
+        "root": ["src"],
+        "alias": {
+          "graph": "./src/graph",
+          "models": "./src/models"
+        },
+        "extensions": [".js", ".jsx", ".es", ".es6", ".mjs"]
+      }
+    ]
+  ]
+}

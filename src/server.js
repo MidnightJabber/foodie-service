@@ -1,11 +1,11 @@
-const hapi = require('hapi');
-const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
-const mongoose = require('mongoose');
+import hapi from 'hapi';
+import { graphqlHapi, graphiqlHapi } from 'apollo-server-hapi';
+import mongoose from 'mongoose';
 
 require('dotenv').config(); // Fetching env variables
 
-require('./models'); // Registering models
-const schema = require('./graphql/schema'); // Importing schema
+import 'models'; // Registering models
+import schema from 'graph/schema'; // Importing schema
 
 const FALLBACK_PORT = 9080;
 
@@ -66,4 +66,4 @@ const initServer = async () => {
   console.log(`Server running on ${server.info.uri}`);
 }
 
-module.exports = initServer;
+export default initServer;
