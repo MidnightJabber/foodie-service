@@ -1,69 +1,66 @@
-const hapi = require('hapi');
-const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
-const mongoose = require('mongoose');
+import 'dotenv/config';
+import cors from 'cors';
+import connectmongo from 'connect-mongo';
+import express from 'express';
+import expressGraphQL from 'express-graphql';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import passport from 'passport';
 
-require('dotenv').config(); // Fetching env variables
+import './models';
+import schema from './schema/schema';
 
-require('./models'); // Registering models
-const schema = require('./graphql/schema'); // Importing schema
-
-const FALLBACK_PORT = 9080;
-
+const app = express();
+const MongoStore = connectmongo(session);
 const {
-  MLAB_USERNAME,
-  MLAB_PASSWORD,
-  MLAB_DS,
-  MLAB_PORT,
-  MLAB_DB,
-  PORT,
-  HOST,
+  MONGO_USER,
+  MONGO_PASSWORD,
+  MONGO_URL,
+  MONGO_DB_NAME,
 } = process.env;
+const MongoUserCredentials = `${MONGO_USER}:${encodeURIComponent(MONGO_PASSWORD)}`;
+const MONGO_CONNECTION_URI = `mongodb://${MongoUserCredentials}@${MONGO_URL}/${MONGO_DB_NAME}`;
+const whitelist = [
+  process.env.LOCAL_CLIENT_DOMAIN,
+  process.env.CLIENT_DOMAIN,
+];
 
-// Connect to MongoDB
-mongoose.connect(`mongodb://${MLAB_USERNAME}:${MLAB_PASSWORD}@ds${MLAB_DS}.mlab.com:${MLAB_PORT}/${MLAB_DB}`);
+console.log(MONGO_CONNECTION_URI);
+
+// enable cors
+const corsOptions = {
+  origin: (origin, callback) => {
+    const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+    callback(null, originIsWhitelisted);
+  },
+  credentials: true, // <= required backend setting
+};
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(MONGO_CONNECTION_URI);
 mongoose.connection
-  .once('open', () => console.log('Connected to MongoDB'))
-  .on('error', () => console.log('Failed to connect to MongoDB'));
+  .once('open', () => console.log('Connected to MLab instance.'))
+  .on('error', error => console.log('Error connecting to MLab: ', error));
 
+app.use(cors(corsOptions));
 
-// Create sever
-const server = hapi.server({
-  port: PORT || FALLBACK_PORT,
-  host: HOST,
-});
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+    url: MONGO_CONNECTION_URI,
+    autoReconnect: true,
+  }),
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Start server
-const initServer = async () => {
-  await server.register({
-    plugin: graphiqlHapi,
-    options: {
-      path: '/graphiql',
-      graphiqlOptions: {
-        endpointURL: '/graphql',
-      },
-      route: {
-        cors: true,
-      },
-    },
-  });
+app.use('/graphql', expressGraphQL({
+  schema,
+  graphiql: true,
+}));
 
-  await server.register({
-    plugin: graphqlHapi,
-    options: {
-      path: '/graphql',
-      graphqlOptions: {
-        schema
-      },
-      route: {
-        cors: true,
-      },
-    },
-  });
-
-  await server.start();
-
-  console.log(`Server running on ${server.info.uri}`);
-}
-
-module.exports = initServer;
+export default app;

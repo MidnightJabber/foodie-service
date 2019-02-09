@@ -1,1 +1,1 @@
-require('./Ingredient');
+import './user';
