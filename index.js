@@ -1,3 +1,5 @@
-const initServer = require('./src/server');
+import app from './src/server';
 
-initServer();
+app.listen(process.env.PORT, () => {
+  console.log('Listening to PORT', process.env.PORT);
+});
