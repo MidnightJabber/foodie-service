@@ -4,5 +4,5 @@ import RootQueryType from './types/rootQuery';
 
 export default new GraphQLSchema({
   query: RootQueryType,
-  mutation
+  mutation,
 });
