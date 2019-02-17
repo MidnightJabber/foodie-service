@@ -7,7 +7,7 @@ const UserSchema = new Schema({
   firstName: String,
   lastName: String,
   email: { type: String, required: [true, 'email is a required field.'] },
-  password: { type: String, required: [true, 'password is a required field.'] }
+  password: { type: String, required: [true, 'password is a required field.'] },
 });
 
 UserSchema.pre('save', function save(next) {
