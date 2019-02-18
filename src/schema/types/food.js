@@ -31,7 +31,7 @@ const FatType = new GraphQLObjectType({
     },
     monounsaturated: {
       type: MeasurementType,
-      description: 'Sugars are the smallest type of carbohydrate and include single sugars and those with two sugar molecules joined together.',
+      description: 'Monounsaturated fatty acids are fatty acids that have one double bond in the fatty acid chain with all of the remainder carbon atoms being single-bonded.',
       resolve(obj) {
         return zeroIfNull(obj.monounsaturated);
       },
@@ -45,7 +45,7 @@ const FatType = new GraphQLObjectType({
     },
     total: {
       type: MeasurementType,
-      description: 'Total amount pf fat.',
+      description: 'Total amount of fat.',
       resolve(obj) {
         return zeroIfNull(obj.total);
       },
@@ -254,8 +254,8 @@ const VitaminInputType = new GraphQLInputObjectType({
   },
 });
 
-const FatInputType = new GraphQLObjectType({
-  name: 'FatType',
+const FatInputType = new GraphQLInputObjectType({
+  name: 'FatInputType',
   fields: {
     saturated: { type: MeasurementInputType },
     polyunsaturated: { type: MeasurementInputType },
